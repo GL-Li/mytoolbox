@@ -1,0 +1,23 @@
+Package: mytoolbox
+Type: Package
+Title: A collection of functions and data that I often use in my daily work
+Date: 2017-09-14
+Version: 0.0.1
+Author: GL Li
+Maintainer: GL Li <liguanglai@gmail.com>
+Description: Any function and dataset that is useful but does not belongs to
+    any other package is placed into this package. 
+License: MIT + file LICENSE
+Encoding: UTF-8
+LazyData: true
+Depends: 
+    R (>= 3.3.1)
+Imports:
+    stringr (>= 1.2.0),
+    data.table (>= 1.10.1),
+    magrittr (>= 1.5),
+    rvest (>= 0.3.2),
+    xml2 (>= 1.1.1),
+    albersusa (>= 0.4.1),
+    ggplot2
+RoxygenNote: 7.1.1
