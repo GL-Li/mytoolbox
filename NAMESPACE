@@ -2,6 +2,7 @@
 
 export(convert_state_names)
 export(download_table)
+export(map_basse_US)
 export(map_county_sf)
 export(map_move_ak_hi)
 export(map_state_sf)

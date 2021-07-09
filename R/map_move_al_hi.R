@@ -26,19 +26,16 @@
 map_move_ak_hi <- function(df, x = "lon", y = "lat"){
     # move the lon and lat of Alaska and Hawaii to the location of 50 states US
     # map and also convert their value to those match the results of usa_sf()
-    if (data.table::is.data.table(df)){
-        tmp <- data.frame(df)
-        xy <- tmp[, c(x, y)]
-        xy <- albersusa::points_elided(xy)
-        df[, (x) := xy$x]
-        df[, (y) := xy$y]
-    } else {
-        df_bk <- df
-        df <- data.frame(df)
-        xy <- df[, c(x, y)]
-        xy <- albersusa::points_elided(xy)
-        df_bk[[x]] <- xy$x
-        df_bk[[y]] <- xy$y
-        return(df_bk)
-    }
+    is_datatable <- data.table::is.data.table(df)
+
+    df <- as.data.frame(df)
+
+    xy <- df[, c(x, y)]
+    xy <- albersusa::points_elided(xy)
+    df[x] <- xy[, 1]
+    df[y] <- xy[, 2]
+
+    if (is_datatable) data.table::setDT(df)
+
+    return(df)
 }

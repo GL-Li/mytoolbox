@@ -1,87 +1,59 @@
 library(data.table)
-get_state_center <- function(name_vector, format) {
-    # return longitude and latitude of the centers of states in state_names
-    # args____________________________
-    # name vector: vector of state names
-    # format: format of state names, in "full", "lowercase", or "abbr"
-    # returns_________________________
-    # a data frame having two columns for longitude and latitude, with name_vector
-    #     as row names
+library(magrittr)
+library(totalcensus)
+library(ggplot2)
+library(mytoolbox)
 
-    # database in the form of a data frame with row names in abbr of state names
-    # These are slightly different from the trun state center as some
-    # small state at east coast have been offset for labeling.
-    state_center_coord <- data.table(
-        state = c("DC", "MS", "LA", "GA", "MD",
-                  "SC", "AL", "NC", "DE", "VA",
-                  "TN", "FL", "AR", "NY", "IL",
-                  "NJ", "MI", "OH", "TX", "MO",
-                  "PA", "CT", "IN", "NV", "KY",
-                  "MA", "OK", "RI", "CA", "KS",
-                  "WI", "MN", "NE", "CO", "AK",
-                  "AZ", "WA", "WV", "HI", "NM",
-                  "IA", "OR", "WY", "UT", "NH",
-                  "SD", "ND", "ME", "ID", "VT",
-                  "MT"),
-        lon = c(-68,         -89.5985283, -92.4623327, -83.3000751, -68,
-                     -80.7637245, -86.702298,  -78.8192997, -68,         -78.6568942,
-                     -86.5804473, -81.5157535, -92.5318334, -74.7179,    -89.2985283,
-                     -74.4056612, -84.6023643, -82.907123,  -99.4018131, -92.5318334,
-                     -77.6945247, -68,         -86.1349019, -116.919389, -84.4700179,
-                     -68,         -97.092877,  -68,         -119.417932, -98.4842465,
-                     -89.7878678, -94.6858998, -99.9018131, -105.782067, -117,
-                     -111.593731, -120.4401,   -80.8549026, -107,        -105.8700901,
-                     -93.397702,  -120.554201, -107.490283, -111.593731, -71.5723953,
-                     -100.218131, -100.602011, -69.2454689, -114.742040, -72.5778415,
-                     -109.3625658),
-             lat = c(33.3,       32.7546679, 30.9842977, 32.4656221, 37.3,
-                     33.836081,  32.9182314, 35.6595731, 35.3,       37.4315734,
-                     35.7174913, 27.6648274, 35.20105,   43.2994,    40.6331249,
-                     40.0583238, 44.3148443, 40.4172871, 31.9685988, 38.4642529,
-                     41.0033216, 39.3,       40.2671941, 39.8026097, 37.7393332,
-                     43.3,       35.3077519, 41.3,       36.778261,  38.611902,
-                     44.7844397, 46.729553,  41.4925374, 39.1500507, 30,
-                     34.3489281, 47.7155,    38.5976262, 27,         34.5199402,
-                     41.8780025, 43.8041334, 43.0759678, 39.3209801, 43.3938516,
-                     44.3695148, 47.5514926, 45.353783,  44.0682019, 44.8588028,
-                     46.8796822)
-             )
-}
-state_center_lab <- get_state_center() %>% setkey(state)
-save(state_center_lab, file = "data/state_center_lab.RData")
+center0 <- read_acs5year(2019, states_DC, summary_level = "040")
+
+state_center_raw <- copy(center0) %>%
+    .[, .(state, lon, lat)] %>%
+    .[, ":="(lon1 = lon,
+             lat1 = lat,
+             lon2 = lon,
+             lat2 = lat)] %>%
+    # (lon1, lat1) for label state names
+    .[state == "VT", ":="(lon1 = -66, lat1 = 44)] %>%
+    .[state == "NH", ":="(lon1 = -66.5, lat1 = 43)] %>%
+    .[state == "MA", ":="(lon1 = -67.1, lat1 = 42)] %>%
+    .[state == "RI", ":="(lon1 = -68, lat1 = 41)] %>%
+    .[state == "CT", ":="(lon1 = -68.4, lat1 = 40)] %>%
+    .[state == "NJ", ":="(lon1 = -68.8, lat1 = 39)] %>%
+    .[state == "DE", ":="(lon1 = -69.3, lat1 = 38)] %>%
+    .[state == "MD", ":="(lon1 = -69.8, lat1 = 37)] %>%
+    .[state == "DC", ":="(lon1 = -70.2, lat1 = 36)] %>%
+    # (lon2, lat2) for line end point to state names
+    .[state == "VT", ":="(lon2 = -67.5, lat2 = 44.2)] %>%
+    .[state == "NH", ":="(lon2 = -68, lat2 = 43.2)] %>%
+    .[state == "MA", ":="(lon2 = -68.5, lat2 = 42.2)] %>%
+    .[state == "RI", ":="(lon2 = -69, lat2 = 41.2)] %>%
+    .[state == "CT", ":="(lon2 = -69.5, lat2 = 40.2)] %>%
+    .[state == "NJ", ":="(lon2 = -70, lat2 = 39.2)] %>%
+    .[state == "DE", ":="(lon2 = -70.5, lat2 = 38.2)] %>%
+    .[state == "MD", ":="(lon2 = -71, lat2 = 37.2)] %>%
+    .[state == "DC", ":="(lon2 = -71.5, lat2 = 36.2)]
 
 
-get_state_center_coord <- function(){
-    # this returns true state center
-    state_center_coord <- data.table(
-            state = c("DC",
-                     "MS", "LA", "GA", "MD", "SC", "AL", "NC", "DE", "VA", "TN", "FL",
-                     "AR", "NY", "IL", "NJ", "MI", "OH", "TX", "MO", "PA", "CT", "IN",
-                     "NV", "KY", "MA", "OK", "RI", "CA", "KS", "WI", "MN", "NE", "CO",
-                     "AK", "AZ", "WA", "WV", "HI", "NM", "IA", "OR", "WY", "UT", "NH",
-                     "SD", "ND", "ME", "ID", "VT", "MT"),
-            lon = c(-77, -89.5985283, -92.4623327, -83.3000751,
-                     -76.6, -80.7637245, -86.702298, -78.8192997, -75.4, -78.6568942,
-                     -86.5804473, -81.5157535, -92.5318334, -74.7179, -89.2985283,
-                     -74.4056612, -84.6023643, -82.907123, -99.4018131, -92.5318334,
-                     -77.6945247, -72.5, -86.1349019, -116.919389, -84.4700179, -72,
-                     -97.092877, -71.5, -119.417932, -98.4842465, -89.7878678, -94.6858998,
-                     -99.9018131, -105.782067, -117, -111.593731, -120.4401, -80.8549026,
-                     -105.5, -105.8700901, -93.397702, -120.554201, -107.490283, -111.593731,
-                     -71.5723953, -100.218131, -100.602011, -69.2454689, -114.74204,
-                     -72.5778415, -109.3625658),
-             lat = c(38.9, 32.7546679, 30.9842977,
-                     32.4656221, 39.3, 33.836081, 32.9182314, 35.6595731, 38.9, 37.4315734,
-                     35.7174913, 27.6648274, 35.20105, 43.2994, 40.6331249, 40.0583238,
-                     44.3148443, 40.4172871, 31.9685988, 38.4642529, 41.0033216, 41.6,
-                     40.2671941, 39.8026097, 37.7393332, 42.4, 35.3077519, 41.7, 36.778261,
-                     38.611902, 44.7844397, 46.729553, 41.4925374, 39.1500507, 30,
-                     34.3489281, 47.7155, 38.5976262, 26, 34.5199402, 41.8780025,
-                     43.8041334, 43.0759678, 39.3209801, 43.3938516, 44.3695148, 47.5514926,
-                     45.353783, 44.0682019, 44.3588028, 46.8796822),
-            key = "state"
-        )
-}
 
-state_center <- get_state_center_coord()
-save(state_center, file = "data/state_center.RData")
+state_center_moved <- copy(state_center_raw) %>%
+    map_move_ak_hi() %>%
+    map_move_ak_hi(x = "lon1", y = "lat1")  %>%
+    map_move_ak_hi(x = "lon2", y = "lat2")
+
+
+ggplot() +
+    geom_sf(data = map_state_sf(), fill = NA, color = "grey") +
+    # geom_point(data = center_moved, aes(lon, lat)) +
+    geom_text(data = state_center_moved, aes(lon1, lat1, label = state),
+              color = "grey", size = 5) +
+    geom_segment(data = state_center_moved,
+                 aes(x = lon, y = lat, xend = lon2, yend = lat2),
+                 alpha = 0.3) +
+    theme_bw() +
+    theme(panel.grid = element_blank())
+
+
+
+save(state_center_raw, file = "data/state_center_raw.RData")
+
+save(state_center_moved, file = "data/state_center_moved.RData")
