@@ -9,7 +9,7 @@
 #' @export
 #'
 
-extract_sf_columns <- function(dat_sf, cols){
+extract_sf_columns <- function(dat_sf, cols) {
     data <- dat_sf[, cols]
     sf::st_geometry(data) <- NULL
 

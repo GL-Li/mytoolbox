@@ -10,33 +10,32 @@
 #' copy --> copy XPath, and paste inside SINGLE quote ' ' as xpath contains
 #' double quotes.
 #'
-#' Package xml2 is required for rvest. Need to import it explicitly in the package.
+#' Package xml2 is required for rvest. Need to import it explicitly in the
+#' package.
 #'
 #' @return a data frame or a saved csv file
 #'
 #' @examples
-#' table_df <-  download_table('https://en.wikipedia.org/wiki/Judgment_of_Paris_(wine)',
-#'                            '//*[@id="mw-content-text"]/div/table[5]',
-#'                            "wine.csv")
+#' \dontrun{
+#' table_df <-  download_table(
+#'     'https://en.wikipedia.org/wiki/Judgment_of_Paris_(wine)',
+#'     '//*[@id="mw-content-text"]/div/table[5]',
+#'     "wine.csv"
+#' )
+#' }
 #' @export
-#' @import rvest
-#' @import xml2
-#' @import magrittr
 #'
 
-# copy the function to project when needed.
-# library(magrittr)
-# library(rvest)
 download_table <- function(url, xpath, save_as) {
     if (!file.exists(save_as)) {
-        table <- url %>%
-            read_html() %>%
-            html_nodes(xpath = xpath) %>%
-            html_table(fill = TRUE)
+        table <- url |>
+            rvest::read_html() |>
+            rvest::html_nodes(xpath = xpath) |>
+            rvest::html_table(fill = TRUE)
         table <- table[[1]]
-        write.csv(table, file = save_as, row.names = FALSE)
+        utils::write.csv(table, file = save_as, row.names = FALSE)
         return(table)
     } else {
-        table <- read.csv(save_as, stringsAsFactors = FALSE)
+        table <- utils::read.csv(save_as, stringsAsFactors = FALSE)
     }
 }

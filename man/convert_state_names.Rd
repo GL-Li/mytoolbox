@@ -9,8 +9,8 @@ convert_state_names(states, to)
 \arguments{
 \item{states}{string, vector of state names to be converted.}
 
-\item{to}{string, format after convertion, take values of "full", "lowercase",
-and "abbr".}
+\item{to}{string, format after convertion, take values of "full",
+"lowercase", and "abbr".}
 }
 \value{
 a vector of converted state names

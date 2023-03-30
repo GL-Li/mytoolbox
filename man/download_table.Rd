@@ -24,10 +24,15 @@ Inspect the webpage, highlight css code for table, right click then
 copy --> copy XPath, and paste inside SINGLE quote ' ' as xpath contains
 double quotes.
 
-Package xml2 is required for rvest. Need to import it explicitly in the package.
+Package xml2 is required for rvest. Need to import it explicitly in the
+package.
 }
 \examples{
-table_df <-  download_table('https://en.wikipedia.org/wiki/Judgment_of_Paris_(wine)',
-                           '//*[@id="mw-content-text"]/div/table[5]',
-                           "wine.csv")
+\dontrun{
+table_df <-  download_table(
+    'https://en.wikipedia.org/wiki/Judgment_of_Paris_(wine)',
+    '//*[@id="mw-content-text"]/div/table[5]',
+    "wine.csv"
+)
+}
 }

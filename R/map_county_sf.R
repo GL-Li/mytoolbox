@@ -9,6 +9,7 @@
 #' @export
 #'
 
-map_county_sf <- function(){
+map_county_sf <- function() {
     county_sf <- albersusa::counties_sf("aeqd")
+    return(county_sf)
 }

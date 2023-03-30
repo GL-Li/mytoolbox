@@ -9,6 +9,7 @@
 #' @export
 #'
 
-map_state_sf <- function(){
+map_state_sf <- function() {
     state_sf <- albersusa::usa_sf("laea")
+    return(state_sf)
 }

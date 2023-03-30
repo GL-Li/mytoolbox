@@ -26,10 +26,12 @@ and moves them to the US map provided by the albersusa package. Coordinates
 belong to other states will not moved.
 }
 \examples{
+\dontrun{
 counties <- totalcensus::read_acs1year(
   2019, c("AK", "HI", "RI"), summary_level = "county"
 )
 
 counties_moved <- map_move_ak_hi(counties)
+}
 
 }

@@ -11,8 +11,8 @@ merge_dt(dt1, dt2, id1 = FALSE, id2 = FALSE)
 
 \item{dt2}{second data.table}
 
-\item{id1, id2}{add a id number for each row of dt1 or dt2 if TRUE. The purpose
-of adding id is for future "by" operation based on rows}
+\item{id1, id2}{add a id number for each row of dt1 or dt2 if TRUE. The
+purpose of adding id is for future "by" operation based on rows}
 }
 \value{
 data.table, which has n1 x n2 rows where n1 and n2 are number of rows
@@ -24,7 +24,7 @@ combination of rows. It is similar to base::merge(df1, df2).
 }
 \examples{
 # make up two data tables
-library(data.table) # have to load it as the examples are run in global environment
+library(data.table) # the examples are run in global environment
 library(magrittr)
 set.seed(123)
 a <- data.table(xa = rnorm(5), ya = rnorm(5))

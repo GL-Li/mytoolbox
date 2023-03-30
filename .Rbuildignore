@@ -1,3 +1,5 @@
 ^.*\.Rproj$
 ^\.Rproj\.user$
-data_raw
+data_raw/
+dev/
+init.R
