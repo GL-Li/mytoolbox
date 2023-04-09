@@ -21,6 +21,7 @@ usethis::use_package("ggplot2", type = "Suggests")
 usethis::use_testthat()
 # add test files
 usethis::use_test("convert_fips_to_names")
+usethis::use_test("download_table")
 usethis::use_test("")
 usethis::use_test("")
 # run tests

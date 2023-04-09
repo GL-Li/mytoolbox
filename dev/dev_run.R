@@ -1,6 +1,5 @@
 
 # create documents, delete NAMESPACE at the first run
-# roxygen2::roxygenise()
 devtools::document()
 # do a full check for errors, warnings, and notes
 devtools::check()
@@ -19,6 +18,5 @@ devtools::install()
 devtools::build()
 
 # view test coverage, package must not being used.
-# detach(package:payEquity)
 covr::report()                # report coverage in DT table
 covr::package_coverage()      # print coverage in R console
