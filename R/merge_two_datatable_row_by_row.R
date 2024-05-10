@@ -14,7 +14,6 @@
 #' @examples
 #' # make up two data tables
 #' library(data.table) # the examples are run in global environment
-#' library(magrittr)
 #' set.seed(123)
 #' a <- data.table(xa = rnorm(5), ya = rnorm(5))
 #' b <- data.table(xb = -1:1, yb = -1:1)
@@ -28,14 +27,12 @@
 #'     print()
 #'
 #' @import data.table
-#' @import magrittr
-#'
 #' @export
 
 merge_dt <- function(dt1, dt2, id1 = FALSE, id2 = FALSE) {
 
     # mute no visible biding notes
-    `.` <- `:=` <- `%>%` <- tmp <- NULL
+    `.` <- `:=` <- tmp <- NULL
 
     if (id1) {
         dt1[, id1 := seq_len(nrow(dt1))]
@@ -47,8 +44,9 @@ merge_dt <- function(dt1, dt2, id1 = FALSE, id2 = FALSE) {
     # they can be joined on.
     dt1[, tmp := 1]
     dt2[, tmp := 1]
-    merged <- dt1[dt2, on = .(tmp), allow.cartesian = TRUE] %>%
-        .[, tmp := NULL]
+    merged <- dt1 |>
+        _[dt2, on = .(tmp), allow.cartesian = TRUE] |>
+        _[, tmp := NULL]
     # remove added columns from dt1 and dt2
     dt1[, tmp := NULL]
     dt2[, tmp := NULL]
