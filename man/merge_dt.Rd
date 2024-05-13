@@ -24,18 +24,5 @@ combination of rows. It is similar to base::merge(df1, df2).
 }
 \examples{
 # make up two data tables
-library(data.table) # the examples are run in global environment
-library(magrittr)
-set.seed(123)
-a <- data.table(xa = rnorm(5), ya = rnorm(5))
-b <- data.table(xb = -1:1, yb = -1:1)
-
-# merge them and create row id for the second data.table
-c <- merge_dt(a, b, id2 = TRUE)
-
-# application: select the point in a that is closest to the point in b
-c[, dist := sqrt((xa - xb)^2 + (ya - yb)^2)] \%>\%
-    .[, .SD[dist == min(dist)], by = id2] \%>\%
-    print()
 
 }

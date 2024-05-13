@@ -13,6 +13,8 @@
 #' Package xml2 is required for rvest. Need to import it explicitly in the
 #' package.
 #'
+#' @import rvest xml2
+#'
 #' @return a data frame or a saved csv file
 #'
 #' @examples

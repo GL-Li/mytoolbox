@@ -3,3 +3,6 @@
 data_raw/
 dev/
 init.R
+.lintr
+.config/
+.local/

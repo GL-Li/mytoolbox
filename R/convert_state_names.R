@@ -21,7 +21,6 @@
 #'
 #'
 #' @import data.table
-#' @import magrittr
 #'
 #' @export
 
@@ -34,7 +33,7 @@ convert_state_names <- function(states, to) {
     # a vector of converted state names
     #
     # mutate no visible binding notes
-    `.` <- `%>%` <- NULL
+    `.` <- NULL
 
     # database:
     full <- c(
@@ -91,8 +90,8 @@ convert_state_names <- function(states, to) {
     to_be_converted <- data.table::data.table(from = states)
     converter <- data.table::data.table(from = get(from),
                             to = get(to))
-    result <- converter[to_be_converted, on = "from"] %>%
-        .[, to]
+    result <- converter[to_be_converted, on = "from"] |>
+        _[, to]
 
     return(result)
 }

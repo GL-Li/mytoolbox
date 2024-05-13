@@ -8,11 +8,11 @@
 #' @examples
 #' timeout(
 #'   {
-#'     for (i in 1:1e8) {
+#'     for (i in 1:10) {
 #'       print(i)
 #'     }
 #'   },
-#'   timeout = 0.1
+#'   timeout = 1
 #' )
 #'
 #' @export
