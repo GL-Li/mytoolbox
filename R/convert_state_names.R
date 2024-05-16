@@ -32,8 +32,6 @@ convert_state_names <- function(states, to) {
     # returns___________
     # a vector of converted state names
     #
-    # mutate no visible binding notes
-    `.` <- NULL
 
     # database:
     full <- c(
